@@ -23,8 +23,8 @@ def save_settings(payload: WebhookSettings) -> dict:
     stored = {
         "webhook_url": str(payload.webhook_url),
         "retry_enabled": payload.retry_enabled,
-        "retryDelay": payload.retry_delay_seconds,
-        "maxRetries": payload.max_retries,
+        "retry_delay_seconds": payload.retry_delay_seconds,
+        "max_retries": payload.max_retries,
     }
 
     with SETTINGS_PATH.open("w", encoding="utf-8") as file:

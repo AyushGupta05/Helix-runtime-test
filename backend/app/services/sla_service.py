@@ -15,6 +15,7 @@ def summarize_tickets(
         for ticket in tickets
         if ticket["status"] != "resolved"
         and (priority is None or ticket["priority"] == priority)
+        and (status is None or ticket["status"] == status)
     ]
     now = datetime(2026, 3, 20, 18, 0, tzinfo=UTC)
 

@@ -11,11 +11,17 @@ def load_settings() -> dict:
     with SETTINGS_PATH.open("r", encoding="utf-8") as file:
         raw_settings = json.load(file)
 
+    def _resolve(key: str, alias: str | None, default: int) -> int:
+        value = raw_settings.get(key)
+        if value is None and alias is not None:
+            value = raw_settings.get(alias)
+        return value if value is not None else default
+
     return {
         "webhook_url": raw_settings["webhook_url"],
         "retry_enabled": raw_settings.get("retry_enabled", True),
-        "retry_delay_seconds": raw_settings.get("retry_delay_seconds", 30),
-        "max_retries": raw_settings.get("max_retries", 3),
+        "retry_delay_seconds": _resolve("retry_delay_seconds", "retryDelay", 30),
+        "max_retries": _resolve("max_retries", "maxRetries", 3),
     }
 
 
@@ -23,8 +29,8 @@ def save_settings(payload: WebhookSettings) -> dict:
     stored = {
         "webhook_url": str(payload.webhook_url),
         "retry_enabled": payload.retry_enabled,
-        "retryDelay": payload.retry_delay_seconds,
-        "maxRetries": payload.max_retries,
+        "retry_delay_seconds": payload.retry_delay_seconds,
+        "max_retries": payload.max_retries,
     }
 
     with SETTINGS_PATH.open("w", encoding="utf-8") as file:

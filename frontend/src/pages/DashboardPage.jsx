@@ -19,7 +19,10 @@ function DashboardPage() {
       try {
         const [ticketData, summaryData] = await Promise.all([
           fetchTickets(),
-          fetchTicketSummary(filters),
+          fetchTicketSummary({
+            status: filters.status === "all" ? null : filters.status,
+            priority: filters.priority === "all" ? null : filters.priority,
+          }),
         ]);
         setTickets(ticketData);
         setSummary(summaryData);

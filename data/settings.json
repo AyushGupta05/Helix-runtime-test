@@ -1,0 +1,6 @@
+{
+  "webhook_url": "https://hooks.example.internal/support-events",
+  "retry_enabled": true,
+  "retry_delay_seconds": 30,
+  "max_retries": 3
+}

@@ -14,8 +14,8 @@ def load_settings() -> dict:
     return {
         "webhook_url": raw_settings["webhook_url"],
         "retry_enabled": raw_settings.get("retry_enabled", True),
-        "retry_delay_seconds": raw_settings.get("retry_delay_seconds", 30),
-        "max_retries": raw_settings.get("max_retries", 3),
+        "retry_delay_seconds": raw_settings.get("retry_delay_seconds", raw_settings.get("retryDelay", 30)),
+        "max_retries": raw_settings.get("max_retries", raw_settings.get("maxRetries", 3)),
     }
 
 
@@ -23,8 +23,8 @@ def save_settings(payload: WebhookSettings) -> dict:
     stored = {
         "webhook_url": str(payload.webhook_url),
         "retry_enabled": payload.retry_enabled,
-        "retryDelay": payload.retry_delay_seconds,
-        "maxRetries": payload.max_retries,
+        "retry_delay_seconds": payload.retry_delay_seconds,
+        "max_retries": payload.max_retries,
     }
 
     with SETTINGS_PATH.open("w", encoding="utf-8") as file:
@@ -35,4 +35,3 @@ def save_settings(payload: WebhookSettings) -> dict:
 
 def compute_retry_schedule(retry_delay_seconds: int, max_retries: int) -> list[int]:
     return [retry_delay_seconds for _ in range(max_retries)]
-
